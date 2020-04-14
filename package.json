@@ -1,0 +1,32 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "Your essential black market quarantine store",
+  "main": "bamazon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jvanhook13/bamazon.git"
+  },
+  "keywords": [
+    "MYSSQL",
+    "DATABASE",
+    "SALES",
+    "INVENTORY"
+  ],
+  "author": "Jared VanHook",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jvanhook13/bamazon/issues"
+  },
+  "homepage": "https://github.com/jvanhook13/bamazon#readme",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "fs": "0.0.1-security",
+    "inquirer": "^7.1.0",
+    "mysql": "^2.18.1",
+    "sql": "^0.78.0"
+  }
+}
