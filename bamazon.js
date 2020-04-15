@@ -2,6 +2,7 @@ var inquirer = require("inquirer")
 var fs = require("fs")
 var chalk = require("chalk")
 var mysql = require("mysql")
+var newInventory;
 
 
 var connection = mysql.createConnection({
@@ -39,7 +40,7 @@ function displayProducts() {
 
     // logs the actual query being run
     console.log(query.sql);
-    
+
 }
 
 
@@ -48,70 +49,98 @@ function displayProducts() {
 function buyProduct() {
     inquirer
         .prompt(
-            
+
             [{
-                name: "item",
-                type: "input",
-                message: "What product ID are you looking for?\n\n",
+                    name: "item",
+                    type: "input",
+                    message: "What product ID are you looking for?\n\n",
 
-            },
+                },
 
-            {
-                name: "amount",
-                type: "input",
-                message: `How much product do you want?`,
+                {
+                    name: "amount",
+                    type: "input",
+                    message: `How much product do you want?`,
 
-            }]
+                }
+            ]
         )
         .then(function (answer) {
-            console.log(answer, "zzzz")
+                console.log(answer, "zzzz")
 
-            var selectedItem = answer.item;
-            console.log(selectedItem, "reeee")
-            var selectedAmount = answer.amount;
+                var selectedItem = answer.item;
+                console.log(selectedItem, "reeee")
+                var selectedAmount = answer.amount;
+                //grabs that database from mysql and querys the prod ID and returns the info about it
+                connection.query(
+                    "SELECT * FROM products WHERE prodID=?", [selectedItem],
+                    function (err, res) {
 
-            connection.query(
-                "SELECT * FROM products WHERE prodID=?", [selectedItem],
-                function (err, res) {
+                        if (err) throw err; {
 
-                    if (err) throw err; {
-                        var currentInventory = res[0].quantity
-                        console.log(currentInventory)
-                        var newInventory = currentInventory -= selectedAmount ;
-                        console.log(newInventory)
-                    }
+                            if (res[0].quantity === 0 && selectedItem === 2) {
+                                //i dont even watch beavis and butthead but the meme fits the time
+                                console.log("NEED TP FOR MY BUNGHOLIO")
 
-                    // logs the actual query being run
-                
-                    connection.end();
-                });
+                            } else if (res[0].quantity === 0) {
+
+                                console.log("OUT OF STOCK")
 
 
 
+                            } else {
 
-        })
-}
+                                var currentInventory = res[0].quantity
+                                console.log(currentInventory)
+                                newInventory = currentInventory -= selectedAmount;
+                                console.log(newInventory)
+
+                            }
 
 
-//         switch (answer.action) {
-//         case "Find songs by artist":
-//           artistSearch();
-//           break;
 
-//         case "Find all artists who appear more than once":
-//           multiSearch();
-//           break;
 
-//         case "Find data within a specific range":
-//           rangeSearch();
-//           break;
+                            // logs the actual query being run
 
-//         case "Search for a specific song":
-//           songSearch();
-//           break;
 
-//         case "exit":
-//           connection.end();
-//           break;
-//         }
-//       });
+                        };
+
+
+                        console.log(newInventory, "please be here")
+
+                        connection.query(
+
+
+                            "UPDATE products SET quantity=? WHERE prodID=?", [newInventory, selectedItem],
+
+
+
+
+                        )
+
+                        connection.query("SELECT * FROM products", function (err, res) {
+
+                                if (err) throw err; {
+
+
+
+                                    console.table(res);
+
+
+
+                                }
+
+
+
+
+                            
+
+
+
+                        })
+
+
+
+
+                })
+        })}
