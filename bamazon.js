@@ -1,5 +1,4 @@
 var inquirer = require("inquirer")
-var chalk = require("chalk")
 var mysql = require("mysql")
 var newInventory;
 
