@@ -130,6 +130,26 @@ function buyProduct() {
 
                                 }
 
+                        connection.query("SELECT * FROM products WHERE prodid=?", [selectedItem] , function (err, res) {
+
+                                    if (err) throw err; {
+    
+    
+                                        var price = res[0].price 
+
+                                        var total = price *= selectedAmount
+
+                                        console.log("Your price is $" ,total)
+
+    
+    
+    
+                                    }
+    
+
+
+
+
 
 
 
@@ -142,5 +162,6 @@ function buyProduct() {
 
 
 
-                })
-        })}
+           
+                    })
+        })})}
